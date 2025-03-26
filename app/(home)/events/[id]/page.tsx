@@ -385,7 +385,7 @@ export default function EventPage({ params }: { params: { id: string } }) {
                 Ready to Join This Event?
               </h2>
               <p className="max-w-[600px] md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed drop-shadow-sm">
-                Secure your spot now and don't miss this opportunity to learn and connect.
+                Secure your spot now and don&apos;t miss this opportunity to learn and connect.
               </p>
             </div>
             <div className="flex flex-col gap-2 min-[400px]:flex-row">

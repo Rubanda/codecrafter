@@ -264,7 +264,7 @@ export default function EventsPage() {
               <div className="inline-flex items-center rounded-lg bg-muted px-3 py-1 text-sm">Host an Event</div>
               <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">Share Your Knowledge</h2>
               <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                Have expertise you'd like to share with the community? Propose an event or workshop and help fellow
+                Have expertise you&apos;d like to share with the community? Propose an event or workshop and help fellow
                 developers grow.
               </p>
               <ul className="grid gap-2">

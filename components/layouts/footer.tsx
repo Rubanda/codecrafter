@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Code, Github, Twitter, Linkedin, Mail } from "lucide-react"
+import {  Github, Twitter, Linkedin, Mail } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 

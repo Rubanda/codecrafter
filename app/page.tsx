@@ -206,8 +206,8 @@ export default function Home() {
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm text-muted-foreground">
-                      "Joining this community has been a game-changer for my career. The workshops and networking
-                      opportunities have helped me grow as a developer."
+                      Joining this community has been a game-changer for my career. The workshops and networking
+                      opportunities have helped me grow as a developer.
                     </p>
                   </CardContent>
                 </Card>
