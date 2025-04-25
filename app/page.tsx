@@ -3,7 +3,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Calendar, Clock, MapPin, Users, ArrowRight, Code, BookOpen } from "lucide-react"
-export default function Home() {
+import { eventsData } from "./_actions/event";
+import { format } from "date-fns";
+export default async function Home() {
+ const upcomingEvents = await eventsData('upcoming')
   return (
       <div className="bg-background min-h-screen "
       style={{
@@ -30,7 +33,7 @@ export default function Home() {
                   <Button size="lg" variant="default" asChild>
                     <Link href="/events">Explore Events</Link>
                   </Button>
-                  <Button size="lg" variant="outline" className="" asChild>
+                  <Button size="lg" variant="outline" className="text-black dark:text-white" asChild>
                     <Link href="/about">Learn More</Link>
                   </Button>
                 </div>
@@ -121,40 +124,40 @@ export default function Home() {
               </div>
             </div>
             <div className="mx-auto grid max-w-5xl items-center gap-6 py-12 md:grid-cols-2 lg:grid-cols-3">
-              {[1, 2, 3].map((i) => (
-                <Card key={i} className="overflow-hidden card-hover border pt-0 ">
+              {upcomingEvents.map((event: any) => (
+                <Card key={event?.id} className="overflow-hidden card-hover border pt-0 ">
                   <div className="aspect-video w-full bg-muted ">
                     <Image
-                      src={`/building-ai.jpeg?height=200&width=400&text=Event+${i}`}
+                      src={ event?.imageUrl ? event?.imageUrl : `/building-ai.jpeg?height=200&width=400&text=Event+${event.id}`}
                       width={400}
-                      height={200}
-                      alt={`Event ${i}`}
-                      className="h-full w-full object-cover"
+                      height={100}
+                      alt={`Event ${event.id}`}
+                      className="h-full w-full object-cover max-h-[350px]"
                     />
                   </div>
                   <CardHeader>
-                    <CardTitle>Web Development Workshop {i}</CardTitle>
+                    <CardTitle>{event?.name}</CardTitle>
                     <CardDescription>Learn the latest web technologies</CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-2 text-sm">
                       <div className="flex items-center">
                         <Calendar className="mr-2 h-4 w-4 text-primary" />
-                        <span>March {10 + i}, 2025</span>
+                        <span>{format(event?.date, "dd MMMM yyyy")}</span>
                       </div>
                       <div className="flex items-center">
                         <Clock className="mr-2 h-4 w-4 text-primary" />
-                        <span>6:00 PM - 8:00 PM</span>
+                        <span>{format(event?.startTime, "HH:mm")} - {format(event?.endTime, "HH:mm")}</span>
                       </div>
                       <div className="flex items-center">
                         <MapPin className="mr-2 h-4 w-4 text-primary" />
-                        <span>Tech Hub, Downtown</span>
+                        <span>{event?.location}</span>
                       </div>
                     </div>
                   </CardContent>
                   <CardFooter>
                     <Button variant="secondary" className="w-full" asChild>
-                      <Link href={`/events/event-${i}`}>View Details</Link>
+                      <Link href={`/events/${event?.id}`}>View Details</Link>
                     </Button>
                   </CardFooter>
                 </Card>

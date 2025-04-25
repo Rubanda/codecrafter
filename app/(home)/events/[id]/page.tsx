@@ -5,78 +5,86 @@ import { Calendar, Clock, MapPin, Users, ArrowLeft, Share2 } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
+import { eventData } from "@/app/_actions/event"
+import { Event } from "@/app/types/event"
+import { format } from "date-fns"
 
-export default function EventPage({ params }: { params: { id: string } }) {
-  // This would typically come from a database or API
-  const event = {
-    id: params.id,
-    title: "Web Development Workshop",
-    description:
-      "Learn the latest web technologies and best practices in this hands-on workshop. We'll cover modern frontend frameworks, responsive design techniques, and performance optimization strategies.",
-    longDescription: `
-      <p>Join us for an immersive workshop on modern web development practices. This session is designed for developers of all skill levels who want to enhance their web development skills.</p>
-      
-      <p>During this workshop, you'll learn:</p>
-      <ul>
-        <li>Modern JavaScript frameworks and libraries</li>
-        <li>Responsive design principles and techniques</li>
-        <li>Performance optimization strategies</li>
-        <li>Accessibility best practices</li>
-        <li>Modern CSS techniques</li>
-      </ul>
-      
-      <p>This is a hands-on workshop, so bring your laptop! We'll provide all the necessary resources and materials.</p>
-      
-      <p>Light refreshments will be served. Don't miss this opportunity to enhance your skills and connect with fellow developers!</p>
-    `,
-    date: "March 15, 2025",
-    time: "6:00 PM - 8:00 PM",
-    location: "Tech Hub, 123 Developer Street, San Francisco, CA",
-    category: "workshop",
-    image: "/placeholder.svg?height=400&width=800&text=Workshop",
-    speaker: {
-      name: "Jane Developer",
-      title: "Senior Frontend Engineer",
-      company: "Tech Solutions Inc.",
-      bio: "Jane is a seasoned frontend developer with over 10 years of experience building web applications. She specializes in modern JavaScript frameworks and performance optimization.",
-      image: "/placeholder.svg?height=100&width=100&text=Jane",
-    },
-    attendees: 42,
-    maxAttendees: 50,
+export default async function EventPage({ params }: { params: { id: string } }) {
+  const { id } = params
+  const event = await eventData(id) as Event
+  if (!event) {
+    return <div>Event not found</div>
   }
-
+  // This would typically come from a database or API
+  // const event = {
+  //   id: params.id,
+  //   title: "Web Development Workshop",
+  //   description:
+  //     "Learn the latest web technologies and best practices in this hands-on workshop. We'll cover modern frontend frameworks, responsive design techniques, and performance optimization strategies.",
+  //   longDescription: `
+  //     <p>Join us for an immersive workshop on modern web development practices. This session is designed for developers of all skill levels who want to enhance their web development skills.</p>
+      
+  //     <p>During this workshop, you'll learn:</p>
+  //     <ul>
+  //       <li>Modern JavaScript frameworks and libraries</li>
+  //       <li>Responsive design principles and techniques</li>
+  //       <li>Performance optimization strategies</li>
+  //       <li>Accessibility best practices</li>
+  //       <li>Modern CSS techniques</li>
+  //     </ul>
+      
+  //     <p>This is a hands-on workshop, so bring your laptop! We'll provide all the necessary resources and materials.</p>
+      
+  //     <p>Light refreshments will be served. Don't miss this opportunity to enhance your skills and connect with fellow developers!</p>
+  //   `,
+  //   date: "March 15, 2025",
+  //   time: "6:00 PM - 8:00 PM",
+  //   location: "Tech Hub, 123 Developer Street, San Francisco, CA",
+  //   category: "workshop",
+  //   image: "/placeholder.svg?height=400&width=800&text=Workshop",
+  //   speaker: {
+  //     name: "Jane Developer",
+  //     title: "Senior Frontend Engineer",
+  //     company: "Tech Solutions Inc.",
+  //     bio: "Jane is a seasoned frontend developer with over 10 years of experience building web applications. She specializes in modern JavaScript frameworks and performance optimization.",
+  //     image: "/placeholder.svg?height=100&width=100&text=Jane",
+  //   },
+  //   attendees: 42,
+  //   maxAttendees: 50,
+  // }
+  console.log(event)
   // Related events
   const relatedEvents = [
     {
-      id: "related-1",
+      id: "1",
       title: "JavaScript Framework Comparison",
       description: "Compare popular JavaScript frameworks in action",
       date: "March 22, 2025",
       category: "workshop",
-      image: "/placeholder.svg?height=200&width=400&text=JavaScript",
+      image: "/building-ai.jpeg?height=200&width=400&text=JavaScript",
     },
     {
-      id: "related-2",
+      id: "2",
       title: "Web Performance Optimization",
       description: "Learn techniques to make your websites faster",
       date: "April 5, 2025",
       category: "workshop",
-      image: "/placeholder.svg?height=200&width=400&text=Performance",
+      image: "/building-ai.jpeg?height=200&width=400&text=Performance",
     },
     {
-      id: "related-3",
+      id: "3",
       title: "Frontend Developers Meetup",
       description: "Network with other frontend developers",
       date: "April 12, 2025",
       category: "meetup",
-      image: "/placeholder.svg?height=200&width=400&text=Meetup",
+      image: "/building-ai.jpeg?height=200&width=400&text=Meetup",
     },
   ]
 
   return (
     <div className="flex flex-col min-h-screen">
       {/* Event Header */}
-      <section className="w-full py-12 md:py-24 lg:py-32 bg-muted">
+      <section className="w-full py-12 md:py-10  bg-muted">
         <div className="container mx-auto px-4 md:px-6">
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-4">
@@ -86,24 +94,24 @@ export default function EventPage({ params }: { params: { id: string } }) {
                   <span className="sr-only">Back to events</span>
                 </Link>
               </Button>
-              <Badge variant="outline">{event.category}</Badge>
+              <Badge variant="outline">{event?.category ?? "Event"}</Badge>
             </div>
             <div className="grid gap-4 md:grid-cols-2">
               <div className="space-y-4">
-                <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">{event.title}</h1>
-                <p className="text-muted-foreground md:text-xl">{event.description}</p>
+                <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">{event?.name}</h1>
+                <div dangerouslySetInnerHTML={{ __html: event?.description }} />
                 <div className="flex flex-wrap gap-6">
                   <div className="flex items-center gap-2">
                     <Calendar className="h-5 w-5 text-primary" />
-                    <span>{event.date}</span>
+                    <span>{format(event?.date, "dd MMMM yyyy")}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Clock className="h-5 w-5 text-primary" />
-                    <span>{event.time}</span>
+                    <span>{format(event?.startTime, "HH:mm")}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <MapPin className="h-5 w-5 text-primary" />
-                    <span>{event.location}</span>
+                    <span>{event?.location}</span>
                   </div>
                 </div>
                 <div className="flex flex-col gap-2 sm:flex-row pt-4">
@@ -116,11 +124,11 @@ export default function EventPage({ params }: { params: { id: string } }) {
               </div>
               <div className="rounded-lg overflow-hidden">
                 <Image
-                  src={event.image || "/placeholder.svg"}
-                  width={800}
-                  height={400}
-                  alt={event.title}
-                  className="h-full w-full object-cover"
+                  src={event?.imageUrl || "/placeholder.svg"}
+                  width={600}
+                  height={350}
+                  alt={event.name || "Event"}
+                  className="h-auto w-full object-cover max-h-[350px]"
                 />
               </div>
             </div>
@@ -135,10 +143,7 @@ export default function EventPage({ params }: { params: { id: string } }) {
             <div className="md:col-span-2 space-y-6">
               <div>
                 <h2 className="text-2xl font-bold tracking-tighter mb-4">About This Event</h2>
-                <div
-                  className="prose max-w-none dark:prose-invert"
-                  dangerouslySetInnerHTML={{ __html: event.longDescription }}
-                />
+                <div dangerouslySetInnerHTML={{ __html: event?.description }} />
               </div>
 
               <Separator />
@@ -148,19 +153,19 @@ export default function EventPage({ params }: { params: { id: string } }) {
                 <div className="flex gap-4 items-start">
                   <div className="h-16 w-16 rounded-full overflow-hidden bg-muted">
                     <Image
-                      src={event.speaker.image || "/placeholder.svg"}
+                      src={event?.calendar?.avatar|| "/placeholder.svg"}
                       width={64}
                       height={64}
-                      alt={event.speaker.name}
+                      alt={event?.calendar?.name || "Speaker"}
                       className="h-full w-full object-cover"
                     />
                   </div>
                   <div>
-                    <h3 className="font-bold">{event.speaker.name}</h3>
-                    <p className="text-sm text-muted-foreground">
-                      {event.speaker.title}, {event.speaker.company}
-                    </p>
-                    <p className="mt-2">{event.speaker.bio}</p>
+                    <h3 className="font-bold">{event?.calendar?.name}</h3>
+                    {/* <p className="text-sm text-muted-foreground">
+                      {event?.calendar?.title}, {event?.calendar?.company}
+                    </p> */}
+                    <p className="mt-2">{event?.calendar?.description}</p>
                   </div>
                 </div>
               </div>
@@ -176,11 +181,11 @@ export default function EventPage({ params }: { params: { id: string } }) {
                     <h3 className="font-medium">Date & Time</h3>
                     <div className="flex items-center gap-2">
                       <Calendar className="h-4 w-4 text-muted-foreground" />
-                      <span>{event.date}</span>
+                      <span>{format(event?.date, "dd MMMM yyyy")}</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Clock className="h-4 w-4 text-muted-foreground" />
-                      <span>{event.time}</span>
+                      <span>{format(event?.startTime, "HH:mm")}</span>
                     </div>
                   </div>
 
@@ -189,8 +194,14 @@ export default function EventPage({ params }: { params: { id: string } }) {
                   <div className="space-y-2">
                     <h3 className="font-medium">Location</h3>
                     <div className="flex items-center gap-2">
+                      {event?.location ?
+                      <>
                       <MapPin className="h-4 w-4 text-muted-foreground" />
-                      <span>{event.location}</span>
+                      <span>{event?.location}</span>
+                      </>
+                      :
+                      <span>No location provided</span>
+                      }
                     </div>
                     <div className="mt-2 h-40 w-full bg-muted rounded-md overflow-hidden">
                       <Image
@@ -205,23 +216,26 @@ export default function EventPage({ params }: { params: { id: string } }) {
 
                   <Separator />
 
-                  <div className="space-y-2">
-                    <h3 className="font-medium">Attendees</h3>
+                  <div className="space-y-3">
+                    <h3 className="font-medium">Spots Available</h3>
                     <div className="flex items-center gap-2">
                       <Users className="h-4 w-4 text-muted-foreground" />
                       <span>
-                        {event.attendees} registered (of {event.maxAttendees} spots)
+                        {event?.attendees !== undefined && event?.maxAttendees !== undefined 
+                          ? `${event.attendees} / ${event.maxAttendees} attendees`
+                          : "Registration open"}
                       </span>
                     </div>
-                    <div className="w-full bg-muted h-2 rounded-full overflow-hidden">
+                    <div className="w-full bg-muted rounded-full h-2 mt-2">
                       <div
-                        className="bg-primary h-full rounded-full"
-                        style={{ width: `${(event.attendees / event.maxAttendees) * 100}%` }}
-                      />
+                        className="bg-primary h-2 rounded-full"
+                        style={{
+                          width: event?.attendees !== undefined && event?.maxAttendees !== undefined 
+                            ? `${(event.attendees / event.maxAttendees) * 100}%`
+                            : "0%",
+                        }}
+                      ></div>
                     </div>
-                    <p className="text-sm text-muted-foreground">
-                      Only {event.maxAttendees - event.attendees} spots left!
-                    </p>
                   </div>
                 </CardContent>
               </Card>

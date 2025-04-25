@@ -6,101 +6,109 @@ import { Calendar, Clock, MapPin, Filter, Search, ArrowRight } from "lucide-reac
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { eventsData } from "@/app/_actions/event"
+import { format } from "date-fns"
+import { Event } from "@/app/types/event"
 
-export default function EventsPage() {
+export default async function EventsPage() {
+  // Fetch both upcoming and past events
+  const upcomingEvents = await eventsData('upcoming')
+  const pastEvents = await eventsData('past')
+  
   // Sample event data
-  const events = [
-    {
-      id: 1,
-      title: "Web Development Workshop",
-      description: "Learn the latest web technologies and best practices",
-      date: "March 15, 2025",
-      time: "6:00 PM - 8:00 PM",
-      location: "Tech Hub, Downtown",
-      category: "workshop",
-      image: "/placeholder.svg?height=200&width=400&text=Workshop",
-    },
-    {
-      id: 2,
-      title: "Mobile App Development Bootcamp",
-      description: "Intensive training on building mobile applications",
-      date: "March 20, 2025",
-      time: "9:00 AM - 5:00 PM",
-      location: "Innovation Center",
-      category: "training",
-      image: "/placeholder.svg?height=200&width=400&text=Bootcamp",
-    },
-    {
-      id: 3,
-      title: "DevOps Meetup",
-      description: "Networking and knowledge sharing for DevOps professionals",
-      date: "March 25, 2025",
-      time: "7:00 PM - 9:00 PM",
-      location: "Cloud Cafe",
-      category: "meetup",
-      image: "/placeholder.svg?height=200&width=400&text=Meetup",
-    },
-    {
-      id: 4,
-      title: "Data Science Fundamentals",
-      description: "Introduction to data science concepts and tools",
-      date: "April 5, 2025",
-      time: "10:00 AM - 12:00 PM",
-      location: "Data Lab",
-      category: "workshop",
-      image: "/placeholder.svg?height=200&width=400&text=Data+Science",
-    },
-    {
-      id: 5,
-      title: "UI/UX Design Principles",
-      description: "Learn the fundamentals of user interface and experience design",
-      date: "April 10, 2025",
-      time: "6:00 PM - 8:00 PM",
-      location: "Design Studio",
-      category: "workshop",
-      image: "/placeholder.svg?height=200&width=400&text=UI/UX",
-    },
-    {
-      id: 6,
-      title: "Networking Night",
-      description: "Connect with fellow developers in a casual setting",
-      date: "April 15, 2025",
-      time: "7:00 PM - 10:00 PM",
-      location: "Tech Lounge",
-      category: "networking",
-      image: "/placeholder.svg?height=200&width=400&text=Networking",
-    },
-    {
-      id: 7,
-      title: "Cloud Computing Certification Prep",
-      description: "Prepare for cloud certification exams with expert guidance",
-      date: "April 20, 2025",
-      time: "9:00 AM - 4:00 PM",
-      location: "Online",
-      category: "training",
-      image: "/placeholder.svg?height=200&width=400&text=Cloud",
-    },
-    {
-      id: 8,
-      title: "Hackathon: Build for Good",
-      description: "48-hour coding challenge to create solutions for social issues",
-      date: "May 1-3, 2025",
-      time: "Starts at 6:00 PM",
-      location: "Innovation Hub",
-      category: "hackathon",
-      image: "/placeholder.svg?height=200&width=400&text=Hackathon",
-    },
-    {
-      id: 9,
-      title: "JavaScript Framework Showdown",
-      description: "Compare popular JavaScript frameworks in action",
-      date: "May 10, 2025",
-      time: "1:00 PM - 5:00 PM",
-      location: "Code Academy",
-      category: "workshop",
-      image: "/placeholder.svg?height=200&width=400&text=JavaScript",
-    },
-  ]
+  // const events = [
+  //   {
+  //     id: 1,
+  //     title: "Web Development Workshop",
+  //     description: "Learn the latest web technologies and best practices",
+  //     date: "March 15, 2025",
+  //     time: "6:00 PM - 8:00 PM",
+  //     location: "Tech Hub, Downtown",
+  //     category: "workshop",
+  //     image: "/building-ai.jpeg?height=200&width=400&text=Workshop",
+  //   },
+  //   {
+  //     id: 2,
+  //     title: "Mobile App Development Bootcamp",
+  //     description: "Intensive training on building mobile applications",
+  //     date: "March 20, 2025",
+  //     time: "9:00 AM - 5:00 PM",
+  //     location: "Innovation Center",
+  //     category: "training",
+  //     image: "/building-ai.jpeg?height=200&width=400&text=Bootcamp",
+  //   },
+  //   {
+  //     id: 3,
+  //     title: "DevOps Meetup",
+  //     description: "Networking and knowledge sharing for DevOps professionals",
+  //     date: "March 25, 2025",
+  //     time: "7:00 PM - 9:00 PM",
+  //     location: "Cloud Cafe",
+  //     category: "meetup",
+  //     image: "/building-ai.jpeg?height=200&width=400&text=Meetup",
+  //   },
+  //   {
+  //     id: 4,
+  //     title: "Data Science Fundamentals",
+  //     description: "Introduction to data science concepts and tools",
+  //     date: "April 5, 2025",
+  //     time: "10:00 AM - 12:00 PM",
+  //     location: "Data Lab",
+  //     category: "workshop",
+  //     image: "/building-ai.jpeg?height=200&width=400&text=Data+Science",
+  //   },
+  //   {
+  //     id: 5,
+  //     title: "UI/UX Design Principles",
+  //     description: "Learn the fundamentals of user interface and experience design",
+  //     date: "April 10, 2025",
+  //     time: "6:00 PM - 8:00 PM",
+  //     location: "Design Studio",
+  //     category: "workshop",
+  //     image: "/building-ai.jpeg?height=200&width=400&text=UI/UX",
+  //   },
+  //   {
+  //     id: 6,
+  //     title: "Networking Night",
+  //     description: "Connect with fellow developers in a casual setting",
+  //     date: "April 15, 2025",
+  //     time: "7:00 PM - 10:00 PM",
+  //     location: "Tech Lounge",
+  //     category: "networking",
+  //     image: "/building-ai.jpeg?height=200&width=400&text=Networking",
+  //   },
+  //   {
+  //     id: 7,
+  //     title: "Cloud Computing Certification Prep",
+  //     description: "Prepare for cloud certification exams with expert guidance",
+  //     date: "April 20, 2025",
+  //     time: "9:00 AM - 4:00 PM",
+  //     location: "Online",
+  //     category: "training",
+  //     image: "/building-ai.jpeg?height=200&width=400&text=Cloud",
+  //   },
+  //   {
+  //     id: 8,
+  //     title: "Hackathon: Build for Good",
+  //     description: "48-hour coding challenge to create solutions for social issues",
+  //     date: "May 1-3, 2025",
+  //     time: "Starts at 6:00 PM",
+  //     location: "Innovation Hub",
+  //     category: "hackathon",
+  //     image: "/building-ai.jpeg?height=200&width=400&text=Hackathon",
+  //   },
+  //   {
+  //     id: 9,
+  //     title: "JavaScript Framework Showdown",
+  //     description: "Compare popular JavaScript frameworks in action",
+  //     date: "May 10, 2025",
+  //     time: "1:00 PM - 5:00 PM",
+  //     location: "Code Academy",
+  //     category: "workshop",
+  //     image: "/building-ai.jpeg?height=200&width=400&text=JavaScript",
+  //   },
+  // ]
+  console.log(upcomingEvents, pastEvents)
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -161,44 +169,46 @@ export default function EventsPage() {
             </TabsList>
             <TabsContent value="upcoming" className="mt-6">
               <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {events.map((event) => (
-                  <Card key={event.id} className="overflow-hidden">
+                {upcomingEvents.map((event: Event) => (
+                  <Card key={event.id} className="overflow-hidden pt-0">
                     <div className="aspect-video w-full bg-muted">
                       <Image
-                        src={event.image || "/placeholder.svg"}
+                        src={event?.imageUrl || "/placeholder.svg"}
                         width={400}
                         height={200}
-                        alt={event.title}
+                        alt={event.name}
                         className="h-full w-full object-cover"
                       />
                     </div>
                     <CardHeader>
                       <div className="flex items-center justify-between">
-                        <Badge variant="outline">{event.category}</Badge>
+                        <Badge variant="outline">{event?.category ?? "Event"}</Badge>
                         <span className="text-sm text-muted-foreground">{event.date}</span>
                       </div>
-                      <CardTitle className="line-clamp-1">{event.title}</CardTitle>
-                      <CardDescription className="line-clamp-2">{event.description}</CardDescription>
+                      <CardTitle className="line-clamp-1">{event?.name}</CardTitle>
+                      <CardDescription className="line-clamp-2">
+                        <div dangerouslySetInnerHTML={{ __html: event?.description }} />
+                      </CardDescription>
                     </CardHeader>
                     <CardContent>
                       <div className="space-y-2 text-sm">
                         <div className="flex items-center">
                           <Calendar className="mr-2 h-4 w-4 opacity-70" />
-                          <span>{event.date}</span>
+                          <span>{event?.date}</span>
                         </div>
                         <div className="flex items-center">
                           <Clock className="mr-2 h-4 w-4 opacity-70" />
-                          <span>{event.time}</span>
+                          <span>{format(event?.startTime, 'HH:mm')}</span>
                         </div>
                         <div className="flex items-center">
                           <MapPin className="mr-2 h-4 w-4 opacity-70" />
-                          <span>{event.location}</span>
+                          <span>{event?.location}</span>
                         </div>
                       </div>
                     </CardContent>
                     <CardFooter>
                       <Button variant="outline" className="w-full" asChild>
-                        <Link href={`/events/event-${event.id}`}>View Details</Link>
+                        <Link href={`/events/${event?.id}`}>View Details</Link>
                       </Button>
                     </CardFooter>
                   </Card>
@@ -206,9 +216,58 @@ export default function EventsPage() {
               </div>
             </TabsContent>
             <TabsContent value="past" className="mt-6">
-              <div className="flex flex-col items-center justify-center py-12 text-center">
-                <p className="text-muted-foreground">No past events to display at this time.</p>
-              </div>
+              {pastEvents.length > 0 ? (
+                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                  {pastEvents.map((event: Event) => (
+                    <Card key={event.id} className="overflow-hidden pt-0">
+                      <div className="aspect-video w-full bg-muted">
+                        <Image
+                          src={event?.imageUrl || "/placeholder.svg"}
+                          width={400}
+                          height={200}
+                          alt={event.name}
+                          className="h-full w-full object-cover"
+                        />
+                      </div>
+                      <CardHeader>
+                        <div className="flex items-center justify-between">
+                          <Badge variant="outline">{event?.category ?? "Event"}</Badge>
+                          <span className="text-sm text-muted-foreground">{event.date}</span>
+                        </div>
+                        <CardTitle className="line-clamp-1">{event?.name}</CardTitle>
+                        <CardDescription className="line-clamp-2">
+                          <div dangerouslySetInnerHTML={{ __html: event?.description }} />
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="space-y-2 text-sm">
+                          <div className="flex items-center">
+                            <Calendar className="mr-2 h-4 w-4 opacity-70" />
+                            <span>{event?.date}</span>
+                          </div>
+                          <div className="flex items-center">
+                            <Clock className="mr-2 h-4 w-4 opacity-70" />
+                            <span>{format(event?.startTime, 'HH:mm')}</span>
+                          </div>
+                          <div className="flex items-center">
+                            <MapPin className="mr-2 h-4 w-4 opacity-70" />
+                            <span>{event?.location}</span>
+                          </div>
+                        </div>
+                      </CardContent>
+                      <CardFooter>
+                        <Button variant="outline" className="w-full" asChild>
+                          <Link href={`/events/${event?.id}`}>View Details</Link>
+                        </Button>
+                      </CardFooter>
+                    </Card>
+                  ))}
+                </div>
+              ) : (
+                <div className="flex flex-col items-center justify-center py-12 text-center">
+                  <p className="text-muted-foreground">No past events to display at this time.</p>
+                </div>
+              )}
             </TabsContent>
           </Tabs>
         </div>
@@ -293,7 +352,7 @@ export default function EventsPage() {
             </div>
             <div className="flex items-center justify-center">
               <Image
-                src="/placeholder.svg?height=400&width=600"
+                src="/chair.jpg?height=400&width=600"
                 width={600}
                 height={400}
                 alt="Host an event"

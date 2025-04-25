@@ -14,6 +14,12 @@ const nextConfig: NextConfig = {
     // your project has ESLint errors.
     ignoreDuringBuilds: true,
   },
+  images: {
+    remotePatterns: [
+      { hostname: "masa.masatafit.com" },
+      { hostname: "masata.s3.amazonaws.com" },
+    ],
+  },
 };
 
 export default nextConfig;

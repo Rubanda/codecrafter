@@ -87,8 +87,11 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-10 border-t pt-6 text-center text-sm text-muted-foreground">
+        <div className="mt-10 border-t pt-6 flex justify-between items-center text-sm text-muted-foreground">
           <p>&copy; {new Date().getFullYear()} DevConnect. All rights reserved.</p>
+          <p>
+            Powered By <a href="https://masata.app" target="_blank" rel="noopener noreferrer" className="font-medium text-primary hover:underline">Masata.app</a>
+          </p>
         </div>
       </div>
     </footer>

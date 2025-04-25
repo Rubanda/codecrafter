@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { useState } from "react"
-import { Button } from "@/components/ui/button"
+import { Button, buttonVariants } from "@/components/ui/button"
 import { ModeToggle } from "@/components/mode-toggle"
 import { Menu, X } from "lucide-react"
 import Image from "next/image"
@@ -44,10 +44,10 @@ export default function Header() {
 
         <div className="flex items-center gap-2">
           <ModeToggle />
-          <Button variant="default" className="hidden md:flex">
-            Join Community
-          </Button>
-
+         
+          <Link className={buttonVariants({ variant: "outline" })} href="https://chat.whatsapp.com/JvEKrYttxw35hp8OlzGJMP" >
+              Join Community
+              </Link>
           {/* Mobile Menu Button */}
           <Button variant="ghost" size="icon" className="md:hidden" onClick={toggleMenu}>
             {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
@@ -83,9 +83,10 @@ export default function Header() {
             >
               Contact
             </Link>
-            <Button variant="default" className="w-full">
+
+              <Link className={buttonVariants({ variant: "outline" })} href="https://chat.whatsapp.com/JvEKrYttxw35hp8OlzGJMP" >
               Join Community
-            </Button>
+              </Link>
           </nav>
         </div>
       )}
