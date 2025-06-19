@@ -5,8 +5,6 @@ export const posts = async () => {
         headers: {
             'Content-Type': 'application/json',
         },
-       cache: 'no-cache', 
-        
     })
     return res.json()
 }
@@ -17,7 +15,6 @@ export const post = async (slug: string ) => {
         headers: {
             'Content-Type': 'application/json',
         },
-       cache: 'no-cache',
     })
     return res.json()
 }

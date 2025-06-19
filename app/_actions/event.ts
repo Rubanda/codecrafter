@@ -13,7 +13,6 @@ export const eventsData = async (type?: 'past' | 'upcoming') => {
             'Content-Type': 'application/json',
             'x-api-key': 'masa_qhQVnKQAN0drmxGkChveqLlChidHbAwIP2ZSKvVJKQQ',
         },
-       cache: 'no-cache', 
     })
     return res.json()
 }
@@ -25,7 +24,6 @@ export const eventData = async (id: string | string[]) => {
             'Content-Type': 'application/json',
             'x-api-key': 'masa_qhQVnKQAN0drmxGkChveqLlChidHbAwIP2ZSKvVJKQQ',
         },
-       cache: 'no-cache',
     })
     return res.json()
 }
