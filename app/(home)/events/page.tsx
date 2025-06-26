@@ -7,107 +7,37 @@ import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { eventsData } from "@/app/_actions/event"
-import { format } from "date-fns"
+import { format, startOfMonth, endOfMonth, eachDayOfInterval, getDay, isSameDay, parseISO } from "date-fns"
 import { Event } from "@/app/types/event"
 
 export default async function EventsPage() {
   // Fetch both upcoming and past events
   const upcomingEvents = await eventsData('upcoming')
   const pastEvents = await eventsData('past')
+  // Fetch all events for calendar
+  const allEvents = await eventsData()
   
-  // Sample event data
-  // const events = [
-  //   {
-  //     id: 1,
-  //     title: "Web Development Workshop",
-  //     description: "Learn the latest web technologies and best practices",
-  //     date: "March 15, 2025",
-  //     time: "6:00 PM - 8:00 PM",
-  //     location: "Tech Hub, Downtown",
-  //     category: "workshop",
-  //     image: "/building-ai.jpeg?height=200&width=400&text=Workshop",
-  //   },
-  //   {
-  //     id: 2,
-  //     title: "Mobile App Development Bootcamp",
-  //     description: "Intensive training on building mobile applications",
-  //     date: "March 20, 2025",
-  //     time: "9:00 AM - 5:00 PM",
-  //     location: "Innovation Center",
-  //     category: "training",
-  //     image: "/building-ai.jpeg?height=200&width=400&text=Bootcamp",
-  //   },
-  //   {
-  //     id: 3,
-  //     title: "DevOps Meetup",
-  //     description: "Networking and knowledge sharing for DevOps professionals",
-  //     date: "March 25, 2025",
-  //     time: "7:00 PM - 9:00 PM",
-  //     location: "Cloud Cafe",
-  //     category: "meetup",
-  //     image: "/building-ai.jpeg?height=200&width=400&text=Meetup",
-  //   },
-  //   {
-  //     id: 4,
-  //     title: "Data Science Fundamentals",
-  //     description: "Introduction to data science concepts and tools",
-  //     date: "April 5, 2025",
-  //     time: "10:00 AM - 12:00 PM",
-  //     location: "Data Lab",
-  //     category: "workshop",
-  //     image: "/building-ai.jpeg?height=200&width=400&text=Data+Science",
-  //   },
-  //   {
-  //     id: 5,
-  //     title: "UI/UX Design Principles",
-  //     description: "Learn the fundamentals of user interface and experience design",
-  //     date: "April 10, 2025",
-  //     time: "6:00 PM - 8:00 PM",
-  //     location: "Design Studio",
-  //     category: "workshop",
-  //     image: "/building-ai.jpeg?height=200&width=400&text=UI/UX",
-  //   },
-  //   {
-  //     id: 6,
-  //     title: "Networking Night",
-  //     description: "Connect with fellow developers in a casual setting",
-  //     date: "April 15, 2025",
-  //     time: "7:00 PM - 10:00 PM",
-  //     location: "Tech Lounge",
-  //     category: "networking",
-  //     image: "/building-ai.jpeg?height=200&width=400&text=Networking",
-  //   },
-  //   {
-  //     id: 7,
-  //     title: "Cloud Computing Certification Prep",
-  //     description: "Prepare for cloud certification exams with expert guidance",
-  //     date: "April 20, 2025",
-  //     time: "9:00 AM - 4:00 PM",
-  //     location: "Online",
-  //     category: "training",
-  //     image: "/building-ai.jpeg?height=200&width=400&text=Cloud",
-  //   },
-  //   {
-  //     id: 8,
-  //     title: "Hackathon: Build for Good",
-  //     description: "48-hour coding challenge to create solutions for social issues",
-  //     date: "May 1-3, 2025",
-  //     time: "Starts at 6:00 PM",
-  //     location: "Innovation Hub",
-  //     category: "hackathon",
-  //     image: "/building-ai.jpeg?height=200&width=400&text=Hackathon",
-  //   },
-  //   {
-  //     id: 9,
-  //     title: "JavaScript Framework Showdown",
-  //     description: "Compare popular JavaScript frameworks in action",
-  //     date: "May 10, 2025",
-  //     time: "1:00 PM - 5:00 PM",
-  //     location: "Code Academy",
-  //     category: "workshop",
-  //     image: "/building-ai.jpeg?height=200&width=400&text=JavaScript",
-  //   },
-  // ]
+  // Calendar setup
+  const currentDate = new Date()
+  const monthStart = startOfMonth(currentDate)
+  const monthEnd = endOfMonth(currentDate)
+  const daysInMonth = eachDayOfInterval({ start: monthStart, end: monthEnd })
+  
+  // Get first day of the month (0 = Sunday, 1 = Monday, etc.)
+  const firstDayOfWeek = getDay(monthStart)
+  
+  // Add empty cells for days before the first day of the month
+  const emptyDays: (Date | null)[] = Array.from({ length: firstDayOfWeek }, () => null)
+  const calendarDays: (Date | null)[] = [...emptyDays, ...daysInMonth]
+  
+  // Helper function to get events for a specific date
+  const getEventsForDate = (date: Date) => {
+    return allEvents.filter((event: Event) => {
+      const eventDate = parseISO(event.date)
+      return isSameDay(eventDate, date)
+    })
+  }
+
   console.log(upcomingEvents, pastEvents)
 
   return (
@@ -167,53 +97,82 @@ export default async function EventsPage() {
               <TabsTrigger value="upcoming">Upcoming Events</TabsTrigger>
               <TabsTrigger value="past">Past Events</TabsTrigger>
             </TabsList>
-            <TabsContent value="upcoming" className="mt-6">
-              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {upcomingEvents.map((event: Event) => (
-                  <Card key={event.id} className="overflow-hidden pt-0">
-                    <div className="aspect-video w-full bg-muted">
-                      <Image
-                        src={event?.imageUrl || "/placeholder.svg"}
-                        width={400}
-                        height={200}
-                        alt={event.name}
-                        className="h-full w-full object-cover"
-                      />
+                        <TabsContent value="upcoming" className="mt-6">
+              {upcomingEvents.length > 0 ? (
+                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                  {upcomingEvents.map((event: Event) => (
+                    <Card key={event.id} className="overflow-hidden pt-0">
+                      <div className="aspect-video w-full bg-muted">
+                        <Image
+                          src={event?.imageUrl || "/placeholder.svg"}
+                          width={400}
+                          height={200}
+                          alt={event.name}
+                          className="h-full w-full object-cover"
+                        />
+                      </div>
+                      <CardHeader>
+                        <div className="flex items-center justify-between">
+                          <Badge variant="outline">{event?.category ?? "Event"}</Badge>
+                          <span className="text-sm text-muted-foreground">{event.date}</span>
+                        </div>
+                        <CardTitle className="line-clamp-1">{event?.name}</CardTitle>
+                        <CardDescription className="line-clamp-2">
+                          <div dangerouslySetInnerHTML={{ __html: event?.description }} />
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="space-y-2 text-sm">
+                          <div className="flex items-center">
+                            <Calendar className="mr-2 h-4 w-4 opacity-70" />
+                            <span>{event?.date}</span>
+                          </div>
+                          <div className="flex items-center">
+                            <Clock className="mr-2 h-4 w-4 opacity-70" />
+                            <span>{event?.location}</span>
+                          </div>
+                          <div className="flex items-center">
+                            <MapPin className="mr-2 h-4 w-4 opacity-70" />
+                            <span>{event?.location}</span>
+                          </div>
+                        </div>
+                      </CardContent>
+                      <CardFooter>
+                        <Button variant="outline" className="w-full" asChild>
+                          <Link href={`/events/${event?.id}`}>View Details</Link>
+                        </Button>
+                      </CardFooter>
+                    </Card>
+                  ))}
+                </div>
+              ) : (
+                <div className="flex flex-col items-center justify-center py-20 text-center w-full">
+                  <div className="relative mb-6">
+                    <div className="w-24 h-24 mx-auto bg-gradient-to-br from-primary/20 to-primary/5 rounded-full flex items-center justify-center">
+                      <Calendar className="h-12 w-12 text-primary/60" />
                     </div>
-                    <CardHeader>
-                      <div className="flex items-center justify-between">
-                        <Badge variant="outline">{event?.category ?? "Event"}</Badge>
-                        <span className="text-sm text-muted-foreground">{event.date}</span>
-                      </div>
-                      <CardTitle className="line-clamp-1">{event?.name}</CardTitle>
-                      <CardDescription className="line-clamp-2">
-                        <div dangerouslySetInnerHTML={{ __html: event?.description }} />
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-2 text-sm">
-                        <div className="flex items-center">
-                          <Calendar className="mr-2 h-4 w-4 opacity-70" />
-                          <span>{event?.date}</span>
-                        </div>
-                        <div className="flex items-center">
-                          <Clock className="mr-2 h-4 w-4 opacity-70" />
-                          <span>{format(event?.startTime, 'HH:mm')}</span>
-                        </div>
-                        <div className="flex items-center">
-                          <MapPin className="mr-2 h-4 w-4 opacity-70" />
-                          <span>{event?.location}</span>
-                        </div>
-                      </div>
-                    </CardContent>
-                    <CardFooter>
-                      <Button variant="outline" className="w-full" asChild>
-                        <Link href={`/events/${event?.id}`}>View Details</Link>
-                      </Button>
-                    </CardFooter>
-                  </Card>
-                ))}
-              </div>
+                  </div>
+                  <div className="space-y-3 max-w-md mx-auto">
+                    <h3 className="text-2xl font-semibold text-foreground">No Upcoming Events</h3>
+                    <p className="text-muted-foreground text-base leading-relaxed">
+                      There are no upcoming events scheduled at the moment. We&apos;re always planning new events, so check back soon!
+                    </p>
+                  </div>
+                  <div className="mt-8 flex gap-3">
+                    <Button variant="default" asChild>
+                      <Link href="#past" className="flex items-center gap-2">
+                        View Past Events
+                        <ArrowRight className="h-4 w-4" />
+                      </Link>
+                    </Button>
+                    <Button variant="outline" asChild>
+                      <Link href="/contact">
+                        Suggest an Event
+                      </Link>
+                    </Button>
+                  </div>
+                </div>
+              )}
             </TabsContent>
             <TabsContent value="past" className="mt-6">
               {pastEvents.length > 0 ? (
@@ -264,8 +223,31 @@ export default async function EventsPage() {
                   ))}
                 </div>
               ) : (
-                <div className="flex flex-col items-center justify-center py-12 text-center">
-                  <p className="text-muted-foreground">No past events to display at this time.</p>
+                <div className="flex flex-col items-center justify-center py-20 text-center w-full">
+                  <div className="relative mb-6">
+                    <div className="w-24 h-24 mx-auto bg-gradient-to-br from-primary/20 to-primary/5 rounded-full flex items-center justify-center">
+                      <Calendar className="h-12 w-12 text-primary/60" />
+                    </div>
+                  </div>
+                  <div className="space-y-3 max-w-md mx-auto">
+                    <h3 className="text-2xl font-semibold text-foreground">No Past Events Yet</h3>
+                    <p className="text-muted-foreground text-base leading-relaxed">
+                      We haven&apos;t hosted any events yet, but exciting things are coming! Check out our upcoming events to see what&apos;s planned.
+                    </p>
+                  </div>
+                  <div className="mt-8 flex gap-3">
+                    <Button variant="default" asChild>
+                      <Link href="#upcoming" className="flex items-center gap-2">
+                        View Upcoming Events
+                        <ArrowRight className="h-4 w-4" />
+                      </Link>
+                    </Button>
+                    <Button variant="outline" asChild>
+                      <Link href="/contact">
+                        Suggest an Event
+                      </Link>
+                    </Button>
+                  </div>
                 </div>
               )}
             </TabsContent>
@@ -287,27 +269,49 @@ export default async function EventsPage() {
           <div className="mx-auto max-w-5xl py-12">
             <Card>
               <CardHeader>
-                <CardTitle>March 2025</CardTitle>
-                <CardDescription>Upcoming events for this month</CardDescription>
+                <CardTitle>{format(currentDate, 'MMMM yyyy')}</CardTitle>
+                <CardDescription>Events for this month</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-7 gap-2 text-center">
                   {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
-                    <div key={day} className="p-2 font-medium">
+                    <div key={day} className="p-2 font-medium text-muted-foreground">
                       {day}
                     </div>
                   ))}
-                  {Array.from({ length: 31 }, (_, i) => i + 1).map((date) => (
-                    <div
-                      key={date}
-                      className={`p-2 rounded-md ${[15, 20, 25].includes(date) ? "bg-primary/10 font-medium" : ""}`}
-                    >
-                      {date}
-                      {date === 15 && <div className="mt-1 text-xs text-primary">Workshop</div>}
-                      {date === 20 && <div className="mt-1 text-xs text-primary">Bootcamp</div>}
-                      {date === 25 && <div className="mt-1 text-xs text-primary">Meetup</div>}
-                    </div>
-                  ))}
+                  {calendarDays.map((date, index) => {
+                    if (!date) {
+                      return <div key={`empty-${index}`} className="p-2"></div>
+                    }
+                    
+                    const dayEvents = getEventsForDate(date)
+                    const hasEvents = dayEvents.length > 0
+                    
+                    return (
+                      <div
+                        key={format(date, 'yyyy-MM-dd')}
+                        className={`p-2 rounded-md min-h-[60px] ${
+                          hasEvents ? "bg-primary/10 font-medium" : ""
+                        } ${isSameDay(date, currentDate) ? "bg-accent border border-primary/30" : ""}`}
+                      >
+                        <div className="text-sm">{format(date, 'd')}</div>
+                        {dayEvents.slice(0, 2).map((event: Event, eventIndex: number) => (
+                          <div 
+                            key={`${event.id}-${eventIndex}`} 
+                            className="mt-1 text-xs text-primary bg-primary/20 rounded px-1 py-0.5 truncate"
+                            title={event.name}
+                          >
+                            {event.name}
+                          </div>
+                        ))}
+                        {dayEvents.length > 2 && (
+                          <div className="mt-1 text-xs text-muted-foreground">
+                            +{dayEvents.length - 2} more
+                          </div>
+                        )}
+                      </div>
+                    )
+                  })}
                 </div>
               </CardContent>
             </Card>
