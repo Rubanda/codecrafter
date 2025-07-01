@@ -38,7 +38,7 @@ export default async function EventsPage() {
     })
   }
 
-  console.log(upcomingEvents, pastEvents)
+  // console.log(upcomingEvents, pastEvents)
 
   return (
     <div className="flex flex-col min-h-screen">

@@ -52,7 +52,7 @@ export default async function EventPage({ params }: { params: { id: string } }) 
   //   attendees: 42,
   //   maxAttendees: 50,
   // }
-  console.log(event)
+  // console.log(event)
   // Related events
   const relatedEvents = [
     {
