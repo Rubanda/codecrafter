@@ -3,9 +3,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Calendar, Clock, MapPin, Users, ArrowRight, Code, BookOpen } from "lucide-react"
-import { eventsData } from "./_actions/event";
+import { eventsData } from "../../_actions/event";
 import { format } from "date-fns";
+import { enUS, tr } from "date-fns/locale";
+import { formatEventDateTime } from "@/lib/utils";
+import { EventLocation } from "@/components/event-location";
+import { getLocale, getTranslations } from "next-intl/server";
+
 export default async function Home() {
+  const locale = await getLocale();
+  const t = await getTranslations('events')
  const upcomingEvents = await eventsData('upcoming')
   return (
       <div className="bg-background min-h-screen "
@@ -23,18 +30,18 @@ export default async function Home() {
               <div className="flex flex-col justify-center space-y-4">
                 <div className="space-y-2">
                   <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none ">
-                    Connect, Learn, and Grow with Fellow Developers
+                    {t('Connect, Learn, and Grow with Fellow Developers')}
                   </h1>
                   <p className="max-w-[600px]  md:text-xl">
-                    Join our vibrant community of developers to share knowledge, attend events, and build your network.
+                    {t('Join our vibrant community of developers to share knowledge, attend events, and build your network')}
                   </p>
                 </div>
                 <div className="flex flex-col gap-2 min-[400px]:flex-row">
                   <Button size="lg" variant="default" asChild>
-                    <Link href="/events">Explore Events</Link>
+                    <Link href="/events">{t('Explore Events')}</Link>
                   </Button>
                   <Button size="lg" variant="outline" className="text-black dark:text-white" asChild>
-                    <Link href="/about">Learn More</Link>
+                    <Link href="/about">{t('Learn More')}</Link>
                   </Button>
                 </div>
               </div>
@@ -59,10 +66,10 @@ export default async function Home() {
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
                 <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight gradient-heading">
-                  Why Join Our Developer Community?
+                  {t('Why Join Our Developer Community?')}
                 </h2>
                 <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  We provide a supportive environment for developers at all stages of their career.
+                  {t('We provide a supportive environment for developers at all stages of their career')}.
                 </p>
               </div>
             </div>
@@ -72,11 +79,11 @@ export default async function Home() {
                   <div className="feature-icon w-12 h-12 flex items-center justify-center mb-2">
                     <Code className="h-6 w-6" />
                   </div>
-                  <CardTitle className="mt-2">Skill Development</CardTitle>
+                  <CardTitle className="mt-2">{t('Skill Development')}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground">
-                    Access workshops, training sessions, and resources to enhance your technical skills.
+                    {t('Access workshops, training sessions, and resources to enhance your technical skills')}.
                   </p>
                 </CardContent>
               </Card>
@@ -85,11 +92,11 @@ export default async function Home() {
                   <div className="feature-icon w-12 h-12 flex items-center justify-center mb-2">
                     <Users className="h-6 w-6" />
                   </div>
-                  <CardTitle className="mt-2">Networking</CardTitle>
+                  <CardTitle className="mt-2">{t('Networking')}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground">
-                    Connect with like-minded developers, mentors, and potential employers.
+                    {t('Connect with like-minded developers, mentors, and potential employers')}.
                   </p>
                 </CardContent>
               </Card>
@@ -98,11 +105,11 @@ export default async function Home() {
                   <div className="feature-icon w-12 h-12 flex items-center justify-center mb-2">
                     <BookOpen className="h-6 w-6" />
                   </div>
-                  <CardTitle className="mt-2">Knowledge Sharing</CardTitle>
+                  <CardTitle className="mt-2">{t('Knowledge Sharing')}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground">
-                    Share your expertise and learn from others through discussions and presentations.
+                    {t('Share your expertise and learn from others through discussions and presentations')}.
                   </p>
                 </CardContent>
               </Card>
@@ -116,57 +123,57 @@ export default async function Home() {
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
                 <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight gradient-heading">
-                  Upcoming Events
+                  {t('Upcoming Events')}
                 </h2>
                 <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  Join us for our latest workshops, meetups, and training sessions.
+                  {t('Join us for our latest workshops, meetups, and training sessions')}.
                 </p>
               </div>
             </div>
             <div className="mx-auto grid max-w-5xl items-center gap-6 py-12 md:grid-cols-2 lg:grid-cols-3">
               {upcomingEvents.map((event: any) => (
-                <Card key={event?.id} className="overflow-hidden card-hover border pt-0 ">
-                  <div className="aspect-video w-full bg-muted ">
+                  <Link key={event?.id} href={`/events/${event?.id}`} className="group block flex-1 w-full">
+                <div  className="relative aspect-[3/4] w-full overflow-hidden rounded-lg">
                     <Image
                       src={ event?.imageUrl ? event?.imageUrl : `/building-ai.jpeg?height=200&width=400&text=Event+${event.id}`}
                       width={400}
                       height={100}
                       alt={`Event ${event.id}`}
-                      className="h-full w-full object-cover max-h-[350px]"
+                      className="object-cover transition-transform duration-700 group-hover:scale-105"
                     />
-                  </div>
-                  <CardHeader>
-                    <CardTitle>{event?.name}</CardTitle>
-                    <CardDescription>Learn the latest web technologies</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-2 text-sm">
-                      <div className="flex items-center">
-                        <Calendar className="mr-2 h-4 w-4 text-primary" />
-                        <span>{format(event?.date, "dd MMMM yyyy")}</span>
-                      </div>
-                      <div className="flex items-center">
-                        <Clock className="mr-2 h-4 w-4 text-primary" />
-                        <span>{format(event?.startTime, "HH:mm")} - {format(event?.endTime, "HH:mm")}</span>
-                      </div>
-                      <div className="flex items-center">
-                        <MapPin className="mr-2 h-4 w-4 text-primary" />
-                        <span>{event?.location}</span>
-                      </div>
+                  <div className="absolute inset-0 rounded-lg bg-gradient-to-t from-black/70 to-transparent to-60%">
+                <div className="flex h-full flex-col justify-end">
+                  <div className="space-y-2 p-4 backdrop-blur-sm">
+                    <h3 className="text-xl font-bold text-white mb-1 group-hover:text-[#f5a623] transition-colors duration-300">
+                      {event?.name}
+                    </h3>
+
+                    <div className="text-white/90">
+                      <EventLocation
+                        virtualInfo={event?.virtual_info}
+                        locationName={event?.geoAddressJson}
+                        all={true}
+                        disableLinks={true}
+                      />
                     </div>
-                  </CardContent>
-                  <CardFooter>
-                    <Button variant="secondary" className="w-full" asChild>
-                      <Link href={`/events/${event?.id}`}>View Details</Link>
-                    </Button>
-                  </CardFooter>
-                </Card>
+
+                    <div className="text-white/90 font-medium uppercase text-sm mt-2">
+                      {event?.isAllDayEvent
+                        ? format(new Date(event?.date), "LLLL d,<y_bin_858>", { locale: locale === "tr" ? tr : enUS })
+                        : formatEventDateTime(event?.startTime, event?.endTime, locale === "tr" ? tr : enUS)}
+                    </div>
+                  </div>
+                </div>
+              </div> 
+                
+                </div>
+                </Link>
               ))}
             </div>
             <div className="flex justify-center">
               <Button variant="outline" className="group" asChild>
                 <Link href="/events" className="flex items-center gap-2">
-                  View All Events
+                  {t('View All Events')}
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </Link>
               </Button>
@@ -180,10 +187,10 @@ export default async function Home() {
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
                 <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight gradient-heading">
-                  What Our Members Say
+                  {t('What Our Members Say')}
                 </h2>
                 <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  Hear from developers who have benefited from our community.
+                  {t('Hear from developers who have benefited from our community')}.
                 </p>
               </div>
             </div>
@@ -224,17 +231,17 @@ export default async function Home() {
           <div className="container mx-auto px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
-                <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">Ready to Join Our Community?</h2>
+                <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">{t('Ready to Join Our Community?')}</h2>
                 <p className="max-w-[600px] md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  Become a part of our growing network of developers and take your skills to the next level.
+                  {t('Become a part of our growing network of developers and take your skills to the next level')}.
                 </p>
               </div>
               <div className="flex flex-col gap-2 min-[400px]:flex-row">
                 <Button size="lg" variant="default" asChild>
-                  <Link href="/contact">Join Now</Link>
+                  <Link href="/contact">{t('Join Now')}</Link>
                 </Button>
                 <Button size="lg" variant="outline" className="text-white border-white hover:bg-white/10" asChild>
-                  <Link href="/about">Learn More</Link>
+                  <Link href="/about">{t('Learn More')}</Link>
                 </Button>
               </div>
             </div>

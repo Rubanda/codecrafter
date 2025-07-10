@@ -3,8 +3,10 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { CheckCircle, Users, Lightbulb, Target, Award } from "lucide-react"
+import { getTranslations } from "next-intl/server"
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const t = await getTranslations('events')
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
@@ -13,11 +15,10 @@ export default function AboutPage() {
           <div className="grid gap-6 lg:grid-cols-2 lg:gap-12">
             <div className="flex flex-col justify-center space-y-4">
               <div className="space-y-2">
-                <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl">About CodeCrafters</h1>
+                <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl">{t('About')} CodeCrafters</h1>
                 <p className="max-w-[600px]  md:text-xl">
-                  A community built by developers, for developers. Learn about our mission, values, and the team behind
-                  DevConnect.
-                </p>
+                    {t('A community built by developers, for developers - Learn about our mission, values, and the team behind DevConnect')}.
+                  </p>
               </div>
             </div>
             <div className="flex items-center justify-center">
@@ -41,55 +42,49 @@ export default function AboutPage() {
           <div className="grid gap-6 lg:grid-cols-2 lg:gap-12">
             <div className="space-y-4">
               <div className="inline-flex items-center rounded-lg bg-primary/10 px-3 py-1 text-sm text-primary">
-                Our Mission
+                {t('Our Mission')}
               </div>
               <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight gradient-heading">
-                Empowering Developers Through Community
+                {t('Empowering Developers Through Community')}
               </h2>
               <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                DevConnect was founded with a simple yet powerful mission: to create a supportive environment where
-                developers can learn, share, and grow together. We believe that by fostering a strong community, we can
-                help developers at all stages of their careers reach their full potential.
+                {t('DevConnect was founded with a simple yet powerful mission: to create a supportive environment where developers can learn, share, and grow together - We believe that by fostering a strong community, we can help developers at all stages of their careers reach their full potential')}.
               </p>
               <ul className="grid gap-2">
                 <li className="flex items-center gap-2">
                   <CheckCircle className="h-5 w-5 text-primary" />
-                  <span>Facilitate knowledge sharing and continuous learning</span>
+                  <span>{t('Facilitate knowledge sharing and continuous learning')}</span> 
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle className="h-5 w-5 text-primary" />
-                  <span>Create networking opportunities for career growth</span>
+                  <span>{t('Create networking opportunities for career growth')}</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle className="h-5 w-5 text-primary" />
-                  <span>Provide resources and support for technical challenges</span>
+                  <span>{t('Provide resources and support for technical challenges')}</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle className="h-5 w-5 text-primary" />
-                  <span>Build an inclusive environment for developers of all backgrounds</span>
+                  <span>{t('Build an inclusive environment for developers of all backgrounds')}</span>
                 </li>
               </ul>
             </div>
             <div className="space-y-4">
               <div className="inline-flex items-center rounded-lg bg-secondary/10 px-3 py-1 text-sm text-secondary">
-                Our Vision
+                {t('Our Vision')}
               </div>
               <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight gradient-heading">
-                Building the Future of Tech Together
+                {t('Building the Future of Tech Together')}
               </h2>
               <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                We envision a world where every developer has access to the resources, mentorship, and community they
-                need to succeed. By bringing together passionate individuals, we aim to foster innovation,
-                collaboration, and excellence in the tech industry.
+                {t('We envision a world where every developer has access to the resources, mentorship, and community they need to succeed - By bringing together passionate individuals, we aim to foster innovation, collaboration, and excellence in the tech industry')}.
               </p>
               <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                Our community is built on the principles of inclusivity, respect, and continuous improvement. We strive
-                to create a space where developers can connect with peers, learn from experts, and contribute to the
-                collective knowledge of our industry.
+                {t('Our community is built on the principles of inclusivity, respect, and continuous improvement - We strive to create a space where developers can connect with peers, learn from experts, and contribute to the collective knowledge of our industry')}.
               </p>
               <div className="flex flex-col gap-2 min-[400px]:flex-row pt-4">
                 <Button variant="default" asChild>
-                  <Link href="/contact">Join Our Community</Link>
+                  <Link href="/contact">{t('Join Our Community')}</Link>
                 </Button>
               </div>
             </div>
@@ -103,10 +98,10 @@ export default function AboutPage() {
           <div className="flex flex-col items-center justify-center space-y-4 text-center">
             <div className="space-y-2">
               <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight gradient-heading">
-                Our Core Values
+                {t('Our Core Values')}
               </h2>
               <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                The principles that guide everything we do at DevConnect.
+                {t('The principles that guide everything we do at DevConnect')}.
               </p>
             </div>
           </div>
@@ -116,11 +111,11 @@ export default function AboutPage() {
                 <div className="feature-icon w-12 h-12 flex items-center justify-center mb-2">
                   <Users className="h-6 w-6" />
                 </div>
-                <CardTitle className="mt-2">Community</CardTitle>
+                <CardTitle className="mt-2">{t('Community')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground">
-                  We believe in the power of community to drive growth and innovation.
+                  {t('We believe in the power of community to drive growth and innovation')}.
                 </p>
               </CardContent>
             </Card>
@@ -129,11 +124,11 @@ export default function AboutPage() {
                 <div className="feature-icon w-12 h-12 flex items-center justify-center mb-2">
                   <Lightbulb className="h-6 w-6" />
                 </div>
-                <CardTitle className="mt-2">Innovation</CardTitle>
+                <CardTitle className="mt-2">{t('Innovation')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground">
-                  We encourage creative thinking and embrace new technologies.
+                  {t('We encourage creative thinking and embrace new technologies')}.
                 </p>
               </CardContent>
             </Card>
@@ -142,11 +137,11 @@ export default function AboutPage() {
                 <div className="feature-icon w-12 h-12 flex items-center justify-center mb-2">
                   <Target className="h-6 w-6" />
                 </div>
-                <CardTitle className="mt-2">Excellence</CardTitle>
+                <CardTitle className="mt-2">{t('Excellence')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground">
-                  We strive for excellence in everything we do and create.
+                  {t('We strive for excellence in everything we do and create')}.
                 </p>
               </CardContent>
             </Card>
@@ -155,11 +150,11 @@ export default function AboutPage() {
                 <div className="feature-icon w-12 h-12 flex items-center justify-center mb-2">
                   <Award className="h-6 w-6" />
                 </div>
-                <CardTitle className="mt-2">Inclusivity</CardTitle>
+                <CardTitle className="mt-2">{t('Inclusivity')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground">
-                  We welcome developers of all backgrounds and experience levels.
+                  {t('We welcome developers of all backgrounds and experience levels')}.
                 </p>
               </CardContent>
             </Card>
@@ -172,17 +167,17 @@ export default function AboutPage() {
         <div className="container mx-auto px-4 md:px-6">
           <div className="flex flex-col items-center justify-center space-y-4 text-center">
             <div className="space-y-2">
-              <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">Ready to Join Our Community?</h2>
+              <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">{t('Ready to Join Our Community?')}</h2>
               <p className="max-w-[600px] md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                Become a part of DevConnect today and start your journey towards growth and success.
+                {t('Become a part of DevConnect today and start your journey towards growth and success')}.
               </p>
             </div>
             <div className="flex flex-col gap-2 min-[400px]:flex-row">
               <Button size="lg" variant="default" asChild>
-                <Link href="/contact">Join Now</Link>
+                <Link href="/contact">{t('Join Now')}</Link>
               </Button>
               <Button size="lg" variant="outline" className="" asChild>
-                <Link href="/events">Explore Events</Link>
+                <Link href="/events">{t('Explore Events')}</Link>
               </Button>
             </div>
           </div>

@@ -2,15 +2,19 @@ import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Calendar, Clock, MapPin, Filter, Search, ArrowRight } from "lucide-react"
-import { Input } from "@/components/ui/input"
+import { Calendar, Clock, MapPin,
+  //  Filter, Search, 
+   ArrowRight } from "lucide-react"
+// import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { eventsData } from "@/app/_actions/event"
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, getDay, isSameDay, parseISO } from "date-fns"
 import { Event } from "@/app/types/event"
+import { getTranslations } from "next-intl/server"
 
 export default async function EventsPage() {
+  const t = await getTranslations('events')
   // Fetch both upcoming and past events
   const upcomingEvents = await eventsData('upcoming')
   const pastEvents = await eventsData('past')
@@ -43,7 +47,7 @@ export default async function EventsPage() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
-      <section className="w-full py-12 md:py-24 lg:py-32 bg-muted">
+      {/* <section className="w-full py-12 md:py-24 lg:py-32 bg-muted">
         <div className="container mx-auto px-4 md:px-6">
           <div className="flex flex-col items-center justify-center space-y-4 text-center">
             <div className="space-y-2">
@@ -55,10 +59,10 @@ export default async function EventsPage() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Search and Filter Section */}
-      <section className="w-full py-6 md:py-12 bg-background border-b">
+      {/* <section className="w-full py-6 md:py-12 bg-background border-b">
         <div className="container mx-auto px-4 md:px-6">
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-[2fr_1fr]">
             <div className="relative">
@@ -87,15 +91,15 @@ export default async function EventsPage() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Events Listing */}
       <section className="w-full py-12 md:py-24 lg:py-32 bg-background">
         <div className="container mx-auto px-4 md:px-6">
           <Tabs defaultValue="upcoming" className="w-full">
             <TabsList className="grid w-full max-w-md grid-cols-2">
-              <TabsTrigger value="upcoming">Upcoming Events</TabsTrigger>
-              <TabsTrigger value="past">Past Events</TabsTrigger>
+              <TabsTrigger value="upcoming">{t('Upcoming Events')}</TabsTrigger>
+              <TabsTrigger value="past">{t('Past Events')}</TabsTrigger>
             </TabsList>
                         <TabsContent value="upcoming" className="mt-6">
               {upcomingEvents.length > 0 ? (
@@ -153,21 +157,21 @@ export default async function EventsPage() {
                     </div>
                   </div>
                   <div className="space-y-3 max-w-md mx-auto">
-                    <h3 className="text-2xl font-semibold text-foreground">No Upcoming Events</h3>
+                    <h3 className="text-2xl font-semibold text-foreground">{t('No Upcoming Events')}</h3>
                     <p className="text-muted-foreground text-base leading-relaxed">
-                      There are no upcoming events scheduled at the moment. We&apos;re always planning new events, so check back soon!
+                      {t('There are no upcoming events scheduled at the moment. We&apos;re always planning new events, so check back soon!')}
                     </p>
                   </div>
                   <div className="mt-8 flex gap-3">
                     <Button variant="default" asChild>
                       <Link href="#past" className="flex items-center gap-2">
-                        View Past Events
+                        {t('View Past Events')}
                         <ArrowRight className="h-4 w-4" />
                       </Link>
                     </Button>
                     <Button variant="outline" asChild>
                       <Link href="/contact">
-                        Suggest an Event
+                        {t('Suggest an Event')}
                       </Link>
                     </Button>
                   </div>
@@ -230,21 +234,21 @@ export default async function EventsPage() {
                     </div>
                   </div>
                   <div className="space-y-3 max-w-md mx-auto">
-                    <h3 className="text-2xl font-semibold text-foreground">No Past Events Yet</h3>
+                    <h3 className="text-2xl font-semibold text-foreground">{t('No Past Events Yet')}</h3>
                     <p className="text-muted-foreground text-base leading-relaxed">
-                      We haven&apos;t hosted any events yet, but exciting things are coming! Check out our upcoming events to see what&apos;s planned.
+                      {t('We haven&apos;t hosted any events yet, but exciting things are coming! Check out our upcoming events to see what&apos;s planned.')}
                     </p>
                   </div>
                   <div className="mt-8 flex gap-3">
                     <Button variant="default" asChild>
                       <Link href="#upcoming" className="flex items-center gap-2">
-                        View Upcoming Events
+                        {t('View Upcoming Events')}
                         <ArrowRight className="h-4 w-4" />
                       </Link>
                     </Button>
                     <Button variant="outline" asChild>
                       <Link href="/contact">
-                        Suggest an Event
+                        {t('Suggest an Event')}
                       </Link>
                     </Button>
                   </div>
@@ -260,9 +264,9 @@ export default async function EventsPage() {
         <div className="container mx-auto px-4 md:px-6">
           <div className="flex flex-col items-center justify-center space-y-4 text-center">
             <div className="space-y-2">
-              <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">Event Calendar</h2>
+              <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">{t('Event Calendar')}</h2>
               <p className="max-w-[700px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                Plan ahead with our event calendar. Never miss an opportunity to learn and connect.
+                {t('Plan ahead with our event calendar Never miss an opportunity to learn and connect')}.
               </p>
             </div>
           </div>
@@ -270,13 +274,13 @@ export default async function EventsPage() {
             <Card>
               <CardHeader>
                 <CardTitle>{format(currentDate, 'MMMM yyyy')}</CardTitle>
-                <CardDescription>Events for this month</CardDescription>
+                <CardDescription>{t('Events for this month')}</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-7 gap-2 text-center">
                   {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
                     <div key={day} className="p-2 font-medium text-muted-foreground">
-                      {day}
+                      {t(day)}
                     </div>
                   ))}
                   {calendarDays.map((date, index) => {
@@ -324,33 +328,32 @@ export default async function EventsPage() {
         <div className="container mx-auto px-4 md:px-6">
           <div className="grid gap-6 lg:grid-cols-2 lg:gap-12">
             <div className="space-y-4">
-              <div className="inline-flex items-center rounded-lg bg-muted px-3 py-1 text-sm">Host an Event</div>
-              <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">Share Your Knowledge</h2>
+              <div className="inline-flex items-center rounded-lg bg-muted px-3 py-1 text-sm">{t('Host an Event')}</div>
+              <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">{t('Share Your Knowledge')}</h2>
               <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                Have expertise you&apos;d like to share with the community? Propose an event or workshop and help fellow
-                developers grow.
+                {t("Have expertise you'd like to share with the community? Propose an event or workshop and help fellow developers grow")}
               </p>
               <ul className="grid gap-2">
                 <li className="flex items-center gap-2">
                   <ArrowRight className="h-4 w-4 text-primary" />
-                  <span>Share your technical expertise</span>
+                  <span>{t('Share your technical expertise')}</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <ArrowRight className="h-4 w-4 text-primary" />
-                  <span>Build your professional network</span>
+                  <span>{t('Build your professional network')}</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <ArrowRight className="h-4 w-4 text-primary" />
-                  <span>Enhance your presentation skills</span>
+                  <span>{t('Enhance your presentation skills')}</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <ArrowRight className="h-4 w-4 text-primary" />
-                  <span>Give back to the developer community</span>
+                  <span>{t('Give back to the developer community')}</span>
                 </li>
               </ul>
               <div className="flex flex-col gap-2 min-[400px]:flex-row pt-4">
                 <Button asChild>
-                  <Link href="/contact">Propose an Event</Link>
+                  <Link href="/contact">{t('Propose an Event')}</Link>
                 </Button>
               </div>
             </div>
@@ -386,15 +389,15 @@ export default async function EventsPage() {
           <div className="flex flex-col items-center justify-center space-y-4 text-center">
             <div className="space-y-2">
               <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight drop-shadow-md">
-                Stay Updated on Future Events
+                {t('Stay Updated on Future Events')}
               </h2>
               <p className="max-w-[600px] md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed drop-shadow-sm">
-                Join our mailing list to receive notifications about upcoming events and training sessions.
+                {t('Join our mailing list to receive notifications about upcoming events and training sessions')}.
               </p>
             </div>
             <div className="flex flex-col gap-2 min-[400px]:flex-row">
               <Button size="lg" variant="default" asChild className="shadow-lg">
-                <Link href="/contact">Subscribe Now</Link>
+                <Link href="/contact">{t('Subscribe Now')}</Link>
               </Button>
               <Button
                 size="lg"
@@ -402,7 +405,7 @@ export default async function EventsPage() {
                 className="text-black border-white hover:bg-white/20 shadow-lg backdrop-blur-sm"
                 asChild
               >
-                <Link href="/about">Learn More</Link>
+                <Link href="/about">{t('Learn More')}</Link>
               </Button>
             </div>
           </div>

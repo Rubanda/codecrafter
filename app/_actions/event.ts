@@ -6,7 +6,7 @@ export const eventsData = async (type?: 'past' | 'upcoming') => {
     if (type) {
         url = `${url}?type=${type}`;
     }
-    
+    console.log({type}) 
     const res = await fetch(url, {
         method: 'GET',
         headers: {
