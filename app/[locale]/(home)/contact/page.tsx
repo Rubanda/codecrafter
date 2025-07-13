@@ -174,8 +174,8 @@ export default function ContactPage() {
                     <div>
                       <h3 className="font-medium">{t('Email')}</h3>
                       <p className="text-sm text-muted-foreground">
-                        <Link href="mailto:info@devconnect.com" className="hover:underline">
-                          info@devconnect.com
+                        <Link href="mailto:info@codecrafters.com" className="hover:underline">
+                          info@codecrafters.com
                         </Link>
                       </p>
                     </div>
@@ -186,7 +186,7 @@ export default function ContactPage() {
                       <h3 className="font-medium">{t('Phone')}</h3>
                       <p className="text-sm text-muted-foreground">
                         <Link href="tel:+1234567890" className="hover:underline">
-                          +1 (234) 567-890
+                          +90 533 870 62 04
                         </Link>
                       </p>
                     </div>
@@ -196,9 +196,9 @@ export default function ContactPage() {
                     <div>
                       <h3 className="font-medium">{t('Location')}</h3>
                       <p className="text-sm text-muted-foreground">
-                        123 Tech Street, Developer District
+                        Near East University
                         <br />
-                        San Francisco, CA 94107
+                        Nicosia, TRNC
                       </p>
                     </div>
                   </div>

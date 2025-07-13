@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Calendar, Clock, MapPin, Users, ArrowRight, Code, BookOpen } from "lucide-react"
+import { Card, CardContent, CardDescription,  CardHeader, CardTitle } from "@/components/ui/card"
+import {  Users, ArrowRight, Code, BookOpen } from "lucide-react"
 import { eventsData } from "../../_actions/event";
 import { format } from "date-fns";
 import { enUS, tr } from "date-fns/locale";
