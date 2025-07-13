@@ -208,7 +208,7 @@ export default function ContactPage() {
               <Card>
                 <CardHeader>
                   <CardTitle>{t('Connect With Us')}</CardTitle>
-                  <CardDescription>{t('Follow us on social media for updates and more.')}</CardDescription>
+                  <CardDescription>{t('Follow us on social media for updates and more')}.</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="flex space-x-4">

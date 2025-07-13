@@ -159,7 +159,7 @@ export default async function EventsPage() {
                   <div className="space-y-3 max-w-md mx-auto">
                     <h3 className="text-2xl font-semibold text-foreground">{t('No Upcoming Events')}</h3>
                     <p className="text-muted-foreground text-base leading-relaxed">
-                      {t('There are no upcoming events scheduled at the moment. We&apos;re always planning new events, so check back soon!')}
+                      {t('There are no upcoming events scheduled at the moment We&apos;re always planning new events, so check back soon!')}
                     </p>
                   </div>
                   <div className="mt-8 flex gap-3">
