@@ -31,6 +31,7 @@ export function useLanguageSwitcher() {
     // Get the path without the language prefix
     const pathWithoutLocale = pathname.replace(/^\/[a-z]{2}/, '')
     // Navigate to the new language path
+    console.log(`store for language ${newLanguage} /${newLanguage}${pathWithoutLocale}`)
     router.push(`/${newLanguage}${pathWithoutLocale}`)
   }
 
