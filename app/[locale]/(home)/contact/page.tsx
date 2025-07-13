@@ -223,7 +223,7 @@ export default function ContactPage() {
                       </Link>
                     </Button>
                     <Button variant="outline" size="icon" asChild>
-                      <Link href="#" aria-label="LinkedIn">
+                      <Link href="https://www.linkedin.com/company/cxdecrafters/posts/?feedView=all" aria-label="LinkedIn">
                         <Linkedin className="h-5 w-5" />
                       </Link>
                     </Button>
