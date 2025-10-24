@@ -13,7 +13,7 @@ import { getLocale, getTranslations } from "next-intl/server";
 export default async function Home() {
   const locale = await getLocale();
   const t = await getTranslations('events')
- const upcomingEvents = await eventsData('upcoming')
+ const upcomingEvents = await eventsData('upcoming') || [];
   return (
       <div className="bg-background min-h-screen "
       style={{
@@ -131,14 +131,14 @@ export default async function Home() {
               </div>
             </div>
             <div className="mx-auto grid max-w-5xl items-center gap-6 py-12 md:grid-cols-2 lg:grid-cols-3">
-              {upcomingEvents.map((event: any) => (
+              {upcomingEvents?.map((event: any) => (
                   <Link key={event?.id} href={`/events/${event?.id}`} className="group block flex-1 w-full">
                 <div  className="relative aspect-[3/4] w-full overflow-hidden rounded-lg">
                     <Image
-                      src={ event?.imageUrl ? event?.imageUrl : `/building-ai.jpeg?height=200&width=400&text=Event+${event.id}`}
+                      src={ event?.imageUrl ? event?.imageUrl : `/building-ai.jpeg?height=200&width=400&text=Event+${event?.id}`}
                       width={400}
                       height={100}
-                      alt={`Event ${event.id}`}
+                      alt={`Event ${event?.id}`}
                       className="object-cover transition-transform duration-700 group-hover:scale-105"
                     />
                   <div className="absolute inset-0 rounded-lg bg-gradient-to-t from-black/70 to-transparent to-60%">
