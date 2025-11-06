@@ -3,17 +3,17 @@ import Image from "next/image";
 import Link from "next/link";
 import { Card, CardContent, CardDescription,  CardHeader, CardTitle } from "@/components/ui/card"
 import {  Users, ArrowRight, Code, BookOpen } from "lucide-react"
-import { eventsData } from "../../_actions/event";
-import { format } from "date-fns";
-import { enUS, tr } from "date-fns/locale";
-import { formatEventDateTime } from "@/lib/utils";
-import { EventLocation } from "@/components/event-location";
-import { getLocale, getTranslations } from "next-intl/server";
+// import { eventsData } from "../../_actions/event";
+// import { format } from "date-fns";
+// import { enUS, tr } from "date-fns/locale";
+// import { formatEventDateTime } from "@/lib/utils";
+// import { EventLocation } from "@/components/event-location";
+import {  getTranslations } from "next-intl/server";
 
 export default async function Home() {
-  const locale = await getLocale();
+  // const locale = await getLocale();
   const t = await getTranslations('events')
- const upcomingEvents = await eventsData('upcoming') || [];
+//  const upcomingEvents = await eventsData('upcoming') || [];
   return (
       <div className="bg-background min-h-screen "
       style={{
@@ -130,7 +130,7 @@ export default async function Home() {
                 </p>
               </div>
             </div>
-            <div className="mx-auto grid max-w-5xl items-center gap-6 py-12 md:grid-cols-2 lg:grid-cols-3">
+            {/* <div className="mx-auto grid max-w-5xl items-center gap-6 py-12 md:grid-cols-2 lg:grid-cols-3">
               {upcomingEvents?.map((event: any) => (
                   <Link key={event?.id} href={`/events/${event?.id}`} className="group block flex-1 w-full">
                 <div  className="relative aspect-[3/4] w-full overflow-hidden rounded-lg">
@@ -169,7 +169,7 @@ export default async function Home() {
                 </div>
                 </Link>
               ))}
-            </div>
+            </div> */}
             <div className="flex justify-center">
               <Button variant="outline" className="group" asChild>
                 <Link href="/events" className="flex items-center gap-2">
